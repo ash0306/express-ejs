@@ -42,6 +42,18 @@ serviceRouter.get('/',(req,res) => {
 })
 
 
+//.find method
+// serviceRouter.get('/:id',(req,res) => {
+//     const serviceID = Number(req.params.id);
+//     const result = services.find(service => service.id === serviceID)
+    
+//     if(!result){
+//         res.send('Services not found');
+//     }
+//     else{
+//         res.json(result.name);
+//     }
+// })
 
 
 serviceRouter.get('/:id',(req,res) => {
@@ -49,7 +61,14 @@ serviceRouter.get('/:id',(req,res) => {
 })
 
 serviceRouter.param('id',(req,res,next,id) =>{
-    req.service = services[id-1];
+    const regex = /^[1-9]$/;
+    const isValid = regex.test(req.params.id);
+    if(isValid){
+        req.service = services[id-1];
+    }
+    else{
+        res.status(500).send("Error finding service");
+    }
     next();
 })
 
